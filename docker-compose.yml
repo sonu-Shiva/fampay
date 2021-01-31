@@ -1,0 +1,68 @@
+version: '2'
+
+volumes:
+  postgres_data: {}
+  postgres_backup: {}
+  django-logs:
+    driver: local
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  django:
+    build: ./django
+    volumes:
+      - ./django:/app
+      - django-logs:/logs
+    user: root
+    depends_on:
+      - postgres
+      - redis
+    env_file: .env
+    ports:
+      - "6000:6000"
+      - "8000:8000"
+
+  redis:
+    image: redis:latest
+
+  celery:
+    build: ./django
+    user: root
+    env_file: .env
+    volumes:
+      - ./django:/celery
+    command: celery -A config worker -l info
+    depends_on:
+      - postgres
+      - redis
+
+  celery-beat:
+    build: ./django
+    volumes:
+      - ./django:/celery
+    user: root
+    env_file: .env
+    command: celery -A config beat -l info
+    depends_on:
+      - postgres
+      - redis
+
+  # celery-flower:
+  #   build: ./django
+  #   volumes:
+  #     - ./django:/celery
+  #   user: root
+  #   env_file: .env
+  #   command: celery flower -A config --basic_auth=admin:pass
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #   ports:
+  #     - "5555:5555"

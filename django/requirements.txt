@@ -1,0 +1,40 @@
+# Configuration
+
+# Django
+Django==3.1
+django-environ==0.4.5
+django-cors-headers==3.4.0
+djangorestframework==3.11.1
+django-extensions==3.0.5
+
+
+# Python-PostgreSQL Database Adapter
+psycopg2-binary==2.8.6
+
+asyncio==3.4.3
+
+ipdb==0.13.4
+ipython==7.16.1
+
+
+# python requests
+requests==2.24.0
+urllib3==1.25.10
+python-dateutil==2.8.1
+
+
+# Celery Dependencies
+amqp==2.5.2
+anyjson==0.3.3
+argh==0.26.2
+billiard==3.6.3.0
+kombu==4.6.8
+
+# Async job managment
+celery==4.4.2
+django-celery-beat==2.0.0
+django-celery-mon==1.0
+redis==3.5.3
+
+# monitoring celery
+flower==0.9.5
